@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script type="text/javascript" src="js/edit1.js"></script>
+
+<script>
+function byId(e){return document.getElementById(e);}
+
+function get_text() {
+   var rawInput = byId('source').value;
+   var base64Output = "data:text/html;base64," + btoa(rawInput);
+   byId('frame').src = base64Output;
+}
+
+function ejecutar() {
+   var fTarget = byId('frame');
+   alert(fTarget);
+	
+   fTarget.attr(
+	   "src", "data:text/html;charset=utf-8," + 
+	   "<html>" + 
+	   "<style>.red {color: red}</style>" + 
+	   "<div class=\"test\">Test</test>" + 
+	   "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"><" + "/script>" +    
+	   "<script>$(function(){ $(\".test\").addClass(\"red\")});<" + "/script>" +         
+	   "</html>"
+	);
+}
+
+
+
+</script>
+
+</head>
+<body>
+
+<a href="#" onclick="ejecutar()">Ejecutar</a>
+ 
+<textarea id="source"></textarea>
+
+<iframe id="frame" src="contenido2.html" width="500" height="500" scrolling="no" />
+
+
+
+
+</body>
+</html>

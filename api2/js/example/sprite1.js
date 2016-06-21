@@ -1,0 +1,1 @@
+perro = sprite('perro',10,100)

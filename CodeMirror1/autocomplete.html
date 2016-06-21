@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Frontend Playground</title>
+        <script src="lib/codemirror.js"></script>
+		<link rel="stylesheet" href="lib/codemirror.css">
+		<link rel="stylesheet" href="addon/hint/show-hint.css">
+		<script src="mode/javascript/javascript.js"></script>
+		<script src="addon/hint/show-hint.js"></script>
+		<script src="addon/hint/javascript-hint.js"></script>
+		<script src="mode/htmlmixed/htmlmixed.js"></script>
+		<script>
+			 
+			window.onload = function() {
+				var textArea = document.getElementById('editor');
+				var editor = CodeMirror.fromTextArea(textArea,{
+					lineNumbers: true,
+					extraKeys: {"Ctrl-Space": "autocomplete"},
+					mode: {name: "javascript", globalVars: true}
+				});
+				editor.getDoc().setValue('var msg = "Hi";');
+			};
+		</script>
+    </head>
+    <body>
+		 <textarea id="editor"></textarea>
+         <div id="code"></div>
+    </body>
+     
+</html>

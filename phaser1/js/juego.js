@@ -1,0 +1,111 @@
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+	game.load.image('fondo', 'assets/sky.png');
+    game.load.image('plataforma', 'assets/platform.png');
+    game.load.image('diamante', 'assets/diamante.png');
+    game.load.spritesheet('personaje', 'assets/dude.png', 32, 48);
+}
+
+var plataforma;
+var suelo;
+var personaje;
+var diamantes;
+var bandeja;
+
+var txtPuntaje;
+var txtVidas;
+ 
+function create(){
+	 game.add.sprite(0, 0, 'fondo');
+	 
+	 plataforma = game.add.sprite(0, 100, 'plataforma');
+	 plataforma.width = 800;
+	 
+	 suelo = game.add.sprite(0, game.world.height - 5, 'plataforma');
+	 suelo.width = 800;
+	 suelo.height = 5;
+	 
+	 bandeja = game.add.sprite(50, game.world.height - 100, 'plataforma');
+	 bandeja.width = 150;
+	 
+	 personaje = game.add.sprite(32, 0, 'personaje');
+ 
+    txtPuntaje = game.add.text(25, 16, 'Puntaje: 0', { font: '24px Arial', fill: '#000' });
+ 
+	txtVidas = game.add.text(625, 16, 'Vidas: 5', {font: '24px Arial', fill: '#000'});
+ 
+	//Agregamos la "fisica"
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	 
+	game.physics.arcade.enable(plataforma);
+	game.physics.arcade.enable(suelo);
+	game.physics.arcade.enable(bandeja);
+	game.physics.arcade.enable(personaje);
+	
+	personaje.body.gravity.y = 300;
+	plataforma.body.immovable = true;
+	
+	
+	personaje.body.velocity.x = 250;
+	
+	personaje.animations.add('left', [0, 1, 2, 3], 10, true);
+	personaje.animations.add('right', [5, 6, 7, 8], 10, true);
+	personaje.animations.play('right');
+	
+	diamantes = game.add.group();
+	
+	//Variables del juego
+	game.giro = 250;
+	game.gravedadDiamantes = 150;
+	game.puntaje = 0;
+	game.vidas = 5;
+}
+
+function update() {
+	game.physics.arcade.collide(personaje, plataforma);
+	 
+	if(personaje.body.velocity.x > 0 && personaje.x > 	game.giro){
+		personaje.body.velocity.x *= -1;
+		game.giro = game.rnd.integerInRange(100, personaje.x-1);
+		personaje.animations.play('left');
+		soltarDiamante();
+	}
+	
+	if(personaje.body.velocity.x < 0 && personaje.x < game.giro){
+		personaje.body.velocity.x *= -1;
+		game.giro = game.rnd.integerInRange(personaje.x+1, 688);
+		personaje.animations.play('right');
+		soltarDiamante();
+	}
+	
+	bandeja.body.x = game.input.mousePointer.x - bandeja.width / 2;
+	
+	//cuando la bandeja toque alguno de los objetos del grupo diamantes llamar recogerDiamante
+	game.physics.arcade.overlap(bandeja, diamantes, recogerDiamante, null, this);
+	
+	// cuando el diamante toque el suelo, debemos llamar  perderVida
+	game.physics.arcade.overlap(diamantes, suelo, perderVida, null, this);
+
+}
+
+
+
+function soltarDiamante() {
+    var diamante = diamantes.create(personaje.x, 100, 'diamante');
+    game.physics.arcade.enable(diamante);
+    diamante.body.gravity.y = game.gravedadDiamantes;
+}
+
+function perderVida(suelo, diamante){
+ diamante.kill();
+ game.vidas -= 1;
+ txtVidas.setText('Vidas: '+game.vidas);
+}
+
+function recogerDiamante(bandeja, diamante){
+ diamante.kill();
+ game.puntaje += 5;
+ txtPuntaje.setText('Puntaje: '+game.puntaje);
+}
+

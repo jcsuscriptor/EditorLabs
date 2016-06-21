@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Tutorial juego HTML 5</title>
+<script type="text/javascript" src="js/phaser.2.4.4.js"></script>
+<script type="text/javascript" src="js/images.js"></script>
+<script type="text/javascript" src="js/sounds.js"></script>
+<script type="text/javascript" src="js/colors.js"></script>
+<script type="text/javascript" src="js/background.js"></script>
+<script type="text/javascript" src="js/api.js"></script>
+
+<script>
+
+	// Assign handler to message event
+	if ( window.addEventListener ) {
+		window.addEventListener('message', handleMessage, false);
+	} else if ( window.attachEvent ) { // ie8
+		window.attachEvent('onmessage', handleMessage);
+	}
+	
+	// message event handler (e is event object) 
+	function handleMessage_simple(e) {
+		
+		// Retrieve data sent in postMessage
+		//el.innerHTML = e.data;
+		console.info(e.data);
+		var code = eval( e.data );
+		
+		// Create a new function and immediately invoke it to create the object literal 
+		var res = ( new Function( 'return ' + e.data ) )(); 
+		//res();
+		 
+	}
+	
+	var blockJavacript;
+	function handleMessage_function(e){
+		var res = ( new Function( 'return ' + e.data ) )(); 
+	
+		if (blockJavacript){
+		
+			//blockJavacript.innerHTML = res;
+			console.info('Cambiar innerHTML');
+			return;
+		}else{
+			blockJavacript = document.createElement('script');
+			blockJavacript.setAttribute('type', 'text/javascript');
+			//blockJavacript.innerHTML = res;
+			document.getElementsByTagName('head').item(0).appendChild(blockJavacript);
+		}
+		//res();
+	}
+	
+	var blockJavacript;
+	function handleMessage(e){
+		
+		//reset game
+		if (game){
+			console.info('game.state.restart()');
+			
+			campusoft.backgroundColor = campusoft.colorNameToHex("black");
+			campusoft.color = campusoft.colorNameToHex("white"); 
+
+			campusoft.NAME_SPRITE_BACKGROUND = "campusoft.spriteBackgroudImage";
+			campusoft.backgroundImage = undefined;
+			campusoft.backgroundImageSprite = undefined;
+
+			campusoft.spriteList = new Array();
+			campusoft.soundList = new Array();
+			campusoft.geometryList  = new Array();
+			campusoft.textList  = new Array();
+			
+			//game.state.restart();
+			game.state.start(game.state.current);
+		}
+		
+		//add block javacript
+		blockJavacript = document.createElement('script');
+		blockJavacript.setAttribute('type', 'text/javascript');
+		blockJavacript.innerHTML = e.data;
+		document.getElementsByTagName('head').item(0).appendChild(blockJavacript);
+		 
+	}
+</script>
+
+</head>
+<body>
+
+<div id="program"></div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+
+<iframe src="http://www.w3schools.com"></iframe>
+
+An inline frame is used to embed another document within the current HTML document.
+
+
+http://www.w3schools.com/tags/tag_iframe.asp
+
+
+var script = "alert('hello world');";
+$('#iframe').contents().find('body').append($('<script>').html(script))
+
+Window btoa() Method
+Encode a string in base-64:
+
+
+http://www.w3schools.com/jsref/met_win_btoa.asp

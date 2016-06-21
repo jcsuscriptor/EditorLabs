@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script type="text/javascript" src="js/edit1.js"></script>
+
+<script>
+function byId(e){return document.getElementById(e);}
+
+function get_text() {
+   
+   var rawInput = byId('source').value;
+   var base64Output = "data:text/html;base64," + btoa(rawInput);
+   byId('frame').src = base64Output;
+ 
+}
+</script>
+
+</head>
+<body>
+
+<iframe id="frame"></iframe>
+
+<a href="#" onclick="get_text()">Ejecutar</a>
+
+<textarea id="source"></textarea>
+
+
+</body>
+</html>

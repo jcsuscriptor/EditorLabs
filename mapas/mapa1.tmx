@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="40" tileheight="40" nextobjectid="1">
+ <tileset firstgid="1" name="tile_bosque" tilewidth="40" tileheight="40" tilecount="200">
+  <image source="tile_bosque.png" width="320" height="1000"/>
+ </tileset>
+ <layer name="Capa de patrones 2" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztw8EJAAAMA6H7Zv+FO0dBwVVTVVVVVVVVVVXV5w/Yk1fl
+  </data>
+ </layer>
+</map>

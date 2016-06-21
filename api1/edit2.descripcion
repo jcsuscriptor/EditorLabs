@@ -1,0 +1,5 @@
+============
+Accede al elementos javascript 
+
+=============
+byId('frame').contentWindow.document.getElementsByTagName('head').item(0).getElementsByTagName('script')

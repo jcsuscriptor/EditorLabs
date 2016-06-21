@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="35" height="25" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="tile_bosque" tilewidth="40" tileheight="40">
+  <image source="../graphics/tilesets/tile_bosque.png" trans="#ff00ff"/>
+ </tileset>
+ <layer name="Base" width="35" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2Tuw6AIAxFWRl9DaiL+v//KAtJc5NaEismeoczQdtTwo0hh...
+  </data>
+ </layer>
+ <layer name="Montañas" width="35" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2W2UpDQQyG+...
+  </data>
+ </layer>
+ <layer name="New Layer" width="35" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGHrAH4gDSFC/EYg3AfFmKN+DinaHA3EEEfqQ7dwFxLup4AZ0u...
+  </data>
+ </layer>
+ <objectgroup name="Eventos" width="35" height="25">
+  <object name="heroe" x="625" y="544"/>
+ </objectgroup>
+</map>

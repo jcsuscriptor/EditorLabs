@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="70" tileheight="70" nextobjectid="1">
+ <tileset firstgid="1" name="block" tilewidth="70" tileheight="70" tilecount="1">
+  <image source="platformerArt_v4/png/block.png" width="70" height="70"/>
+ </tileset>
+ <tileset firstgid="2" name="crate" tilewidth="70" tileheight="70" tilecount="1">
+  <image source="platformerArt_v4/png/crate.png" width="70" height="70"/>
+ </tileset>
+ <tileset firstgid="3" name="ground_rock" tilewidth="70" tileheight="70" tilecount="1">
+  <image source="platformerArt_v4/png/ground_rock.png" width="70" height="70"/>
+ </tileset>
+ <tileset firstgid="4" name="lock_green" tilewidth="70" tileheight="70" tilecount="1">
+  <image source="platformerArt_v4/png/lock_green.png" width="70" height="70"/>
+ </tileset>
+ <tileset firstgid="5" name="ground_dirt" tilewidth="70" tileheight="70" tilecount="1">
+  <image source="platformerArt_v4/png/ground_dirt.png" width="70" height="70"/>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYCUDMw8TdSxk+p9WGACBRwHq
+  </data>
+ </layer>
+</map>

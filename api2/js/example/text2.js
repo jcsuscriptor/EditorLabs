@@ -1,0 +1,1 @@
+text('Trabajar con texto',300,300,'blue')

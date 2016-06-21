@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Demo</title>
+  
+   
+  <script src="blockly_uncompressed.js"></script>
+  <script src="blocks_compressed.js"></script>
+  
+  <script src="javascript_compressed.js"></script>
+  
+  <script src="msg/js/es.js"></script>
+
+ 
+  
+</head>
+<body>
+
+	<p>
+		<button onclick="showCode()">Show JavaScript</button>
+		<button onclick="runCode()">Run JavaScript</button>
+   </p>
+  
+	<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+	<div id="textarea" style="height: 480px; "></div>
+	
+	 <xml id="toolbox" style="display: none">
+    <block type="controls_if"></block>
+	<block type="controls_if">
+          <mutation else="1"></mutation>
+    </block>
+    <block type="logic_compare"></block>
+	 
+		<block type="logic_operation"></block>
+		<block type="logic_negate"></block>
+		<block type="logic_boolean"></block>
+		<block type="logic_null"></block>
+		<block type="logic_ternary"></block>
+		
+    <block type="controls_repeat_ext"></block>
+    <block type="math_number"></block>
+    <block type="math_arithmetic"></block>
+    <block type="text"></block>
+    <block type="text_print"></block>
+  </xml>
+	 
+ <script>
+  var toolbox = '<xml>';
+  toolbox += '  <block type="controls_if"></block>';
+  toolbox += '  <block type="controls_whileUntil"></block>';
+  toolbox += '</xml>';
+  
+  var workspace = Blockly.inject('blocklyDiv',
+      { toolbox: document.getElementById('toolbox'),
+		grid:
+         {spacing: 50,
+          length: 3,
+          colour: '#ccc',
+          snap: true}});
+	
+	
+	function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+ 
+ 
+	function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+	  document.getElementById('textarea').value = code;
+      alert(code);
+    }
+	
+	function myUpdateFunction() {
+	  var code = Blockly.JavaScript.workspaceToCode(workspace);
+	  document.getElementById('textarea').value = code;
+	}
+	
+	//workspace.addChangeListener(myUpdateFunction); 
+		  
+</script>
+</body>
+</html>

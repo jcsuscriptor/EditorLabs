@@ -1,3 +1,8 @@
+
+
+/**
+ * 
+ */
 var ns = function (namespace) {
     var nsparts = namespace.split(".");
     var parent = window;
@@ -18,3 +23,8 @@ var ns = function (namespace) {
     // we return the outermost namespace
     return parent;
 };
+
+var getFullPath = function name(src) {
+    //TODO: Mejorar la estructura de carpetas
+    return '../'+ src;
+}; 

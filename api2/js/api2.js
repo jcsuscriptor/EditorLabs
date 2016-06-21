@@ -23,7 +23,6 @@ var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, 'game');
 //List collisions
 campusoft.game.collideList = [];
 
-
 campusoft.game.main = function(game){
 	console.info("campusoft.game.main");
 };
@@ -72,6 +71,9 @@ campusoft.game.main.prototype = {
 game.state.add("main",campusoft.game.main);
 game.state.start("main");
 
+/**
+ * 
+ */
 campusoft.game.Sprite = function (game, x, y, name,frame) {
     console.info('campusoft.game.Sprite');
 	
@@ -111,7 +113,7 @@ campusoft.game.Sprite = function (game, x, y, name,frame) {
 	   
 	   //this.game.load.onLoadStart.addOnce(_loadStart, this);
 	   game.load.onLoadComplete.addOnce(_loadComplete, this,0,this.name);
-	   game.load.image(this.name, this.image.src);
+	   game.load.image(this.name, getFullPath(this.image.src));
 	   game.load.start();
  	   
 	}else{
@@ -128,11 +130,17 @@ campusoft.game.Sprite = function (game, x, y, name,frame) {
 campusoft.game.Sprite.prototype = Object.create(Phaser.Sprite.prototype);
 campusoft.game.Sprite.prototype.constructor = campusoft.game.Sprite;
 
+/**
+ * 
+ */
 campusoft.game.Sprite.prototype.move = function(x,y){
 	this.x = x;
 	this.y = y;
 };
 
+/**
+ * 
+ */
 campusoft.game.Sprite.prototype.change = function(newName){
 	console.info("campusoft.game.Sprite.prototype.change");
 	this.name = newName;
@@ -153,13 +161,17 @@ campusoft.game.Sprite.prototype.change = function(newName){
 	  
   	   this.game.load.onLoadComplete.addOnce(_loadComplete, this,0,this.name);
 	   
-	   this.game.load.image(this.name, this.image.src);
+	  
+	   this.game.load.image(this.name, getFullPath(this.image.src));
 	   this.game.load.start();
 	}else{
 		this.loadTexture(this.name);
 	}
 };
 
+/**
+ * 
+ */
 campusoft.game.Sprite.prototype.tap =  function(fnName){
 		 
 	if (typeof fnName !== 'function')
@@ -172,6 +184,9 @@ campusoft.game.Sprite.prototype.tap =  function(fnName){
 	
 };
 
+/**
+ * 
+ */
 campusoft.game.Sprite.prototype.drag =  function(fnName){
 		
 	if (typeof fnName !== 'function')
@@ -184,6 +199,9 @@ campusoft.game.Sprite.prototype.drag =  function(fnName){
 	this.events.onDragStop.add(fnName, this);
 };
 
+/**
+ * 
+ */
 campusoft.game.Text = function (game,text, x, y, color, style){
 	  console.info('campusoft.game.Text');
 	  
@@ -238,6 +256,9 @@ campusoft.game.Text = function (game,text, x, y, color, style){
 campusoft.game.Text.prototype = Object.create(Phaser.Text.prototype);
 campusoft.game.Text.prototype.constructor = campusoft.game.Text;
 
+/**
+ * 
+ */
 campusoft.game.Text.prototype.tap =  function(fnName){
 		 
 	if (typeof fnName !== 'function')
@@ -249,6 +270,9 @@ campusoft.game.Text.prototype.tap =  function(fnName){
 	this.events.onInputDown.add(fnName,this); 
 };
 
+/**
+ * 
+ */
 campusoft.game.Group = function (game,name){
 	  console.info('campusoft.game.Group');
 	  
@@ -261,6 +285,9 @@ campusoft.game.Group.prototype = Object.create(Phaser.Group.prototype);
 campusoft.game.Group.prototype.constructor = campusoft.game.Group;
 
 
+/**
+ * 
+ */
 campusoft.game.Tween = function (target, game, manager) {
 	 console.info('campusoft.game.Tween');
 	 
@@ -302,6 +329,9 @@ campusoft.game.Tween.prototype.from =  function(properties, duration, ease, auto
 	return this;
 };
 
+/**
+ * 
+ */
 campusoft.game.collide  = function(obj1,obj2, collisionHandler){
 	console.info('campusoft.game.collide');
 	this.obj1 = obj1;
@@ -383,7 +413,7 @@ var fill = function(name) {
 		};
 
 		game.load.onLoadComplete.addOnce(_loadBackgroundImage, this);
-		game.load.image(_data.name, _data.src);
+		game.load.image(_data.name, getFullPath(_data.src));
 		
 		game.load.start();
 		return true;
@@ -392,6 +422,9 @@ var fill = function(name) {
 	return false;
 };
 
+/**
+ * 
+ */
 var sprite = function(name,x,y) {
    var _x = x || 0;
    var _y = y || 0;
@@ -402,6 +435,9 @@ var sprite = function(name,x,y) {
    return _sprite;
 };
 
+/**
+ * 
+ */
 var text = function(text,x,y,color,style){
 	
 	if (x === undefined) { x = 0; }
@@ -423,11 +459,17 @@ var text = function(text,x,y,color,style){
     return _text;
 };
 
+/**
+ * 
+ */
 var group = function(name){
 	var _group = new campusoft.game.Group(game,name);
     return _group;
 };
 
+/**
+ * 
+ */
 var tween = function(target) {
 	/*
 	* TODO: Revisar si es necesario verificar el tipo de dato.
@@ -439,6 +481,9 @@ var tween = function(target) {
 	return _tween;
 };
 
+/**
+ * 
+ */
 var collide = function(obj1, obj2, collisionHandler){
   	
 	if (!collisionHandler)

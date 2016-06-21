@@ -1,7 +1,13 @@
+/**
+* @author   Juan Carlos Saavedra <@jc_suscriptor>
+*/
 
 
 /**
  * 
+ * 
+ * @param {any} namespace
+ * @returns
  */
 var ns = function (namespace) {
     var nsparts = namespace.split(".");
@@ -24,7 +30,16 @@ var ns = function (namespace) {
     return parent;
 };
 
-var getFullPath = function name(src) {
+/**
+ * 
+ * 
+ * @param {any} src
+ * @returns
+ */
+var getFullPath = function (src) {
     //TODO: Mejorar la estructura de carpetas
     return '../'+ src;
 }; 
+
+// TODO: Used for i18n string extraction
+var i18n = { _: function (msg) { return msg; } };

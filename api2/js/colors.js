@@ -1,6 +1,11 @@
+/**
+* @author   Juan Carlos Saavedra <@jc_suscriptor>
+*/
+
 var campusoft = campusoft || {};
 if (!campusoft.game) campusoft.game = {};
 if (!campusoft.game.asset) campusoft.game.asset = {};
+
 	
 campusoft.game.colors = 
 {  

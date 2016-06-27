@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ACE in Action</title>
+<style type="text/css" media="screen">
+    #editor { 
+        height: 300px; 
+        width: 35%;
+    }
+    #output{
+        width: 600px;
+        float: right;
+        height: 800px;
+    }
+ 
+    iframe {
+        display: block;       /* iframes are inline by default */
+        border: none;         /* Reset default border */
+        width: 800px;
+        height: 600px;
+    }
+</style>
+
+<script type="text/javascript" src="../../api2/js/edit.js"></script>
+ 
+
+</head>
+<body>
+
+<div>
+    <textarea name="editor" id="editor">
+          perro = sprite('perro',10,100);
+    </textarea>
+     
+    <input onclick="runCode();" type="button" value="Run Code">
+
+    <div id="output"> 
+        
+        <iframe name="ifOutput"  id="ifOutput" src="output.0.1.html" frameBorder="0">
+
+        </iframe>
+
+    </div>
+</div>
+ 
+<script>
+     
+    var iframe = document.getElementById('ifOutput');
+    var editCode = new campusoft.game.Edit(iframe);
+
+    
+    function runCode()
+    {
+        var code = document.getElementById('editor').value;
+        editCode.runCode(code);
+    }
+
+</script>
+
+</body>
+</html>

@@ -69,7 +69,7 @@ campusoft.game.main.prototype = {
 		}
 
 		if (window.loop && (typeof window.loop == 'function')) {
-			//console.info('loop');
+			
 			window.loop();
 		}
 	}
@@ -91,7 +91,7 @@ game.state.start("main");
  * @param {string|number} frame - If this Sprite is using part of a sprite sheet or texture atlas you can specify the exact frame to use by giving a string or numeric index.
  */
 campusoft.game.Sprite = function (game, x, y, name, frame) {
-    console.info('campusoft.game.Sprite');
+    console.debug('campusoft.game.Sprite');
 
 	this.game = game;
 
@@ -120,7 +120,7 @@ campusoft.game.Sprite = function (game, x, y, name, frame) {
 		var _loadComplete = function (name) {
 			this.loadTexture(this.name);
 			game.physics.enable(this, Phaser.Physics.ARCADE);
-			console.info('campusoft.game.Sprite._loadComplete');
+			console.debug('campusoft.game.Sprite._loadComplete');
 		};
 
 		Phaser.Sprite.call(this, game, x, y, this.name, frame);
@@ -139,8 +139,6 @@ campusoft.game.Sprite = function (game, x, y, name, frame) {
 		game.physics.arcade.enable(this);
 	}
 
-
-	console.info('campusoft.game.Sprite.return');
 };
 
 campusoft.game.Sprite.prototype = Object.create(Phaser.Sprite.prototype);
@@ -167,7 +165,7 @@ campusoft.game.Sprite.prototype.move = function (x, y) {
  * @param {string} newName - This is the image or texture used by the Sprite during rendering.
  */
 campusoft.game.Sprite.prototype.change = function (newName) {
-	console.info("campusoft.game.Sprite.prototype.change");
+	console.debug("campusoft.game.Sprite.prototype.change");
 	this.name = newName;
 
 	if (campusoft.game.asset.images[this.name]) {
@@ -258,7 +256,7 @@ campusoft.game.Sprite.prototype.drag = function (fnName) {
  * @param {number} [style.tabs=0] - The size (in pixels) of the tabs, for when text includes tab characters. 0 disables. Can be an array of varying tab sizes, one per tab stop.
  */
 campusoft.game.Text = function (game, text, x, y, color, style) {
-	console.info('campusoft.game.Text');
+	console.debug('campusoft.game.Text');
 
 	var _color; // private member
 	if (color === undefined || color === null || !campusoft.game.colors[color]) {
@@ -330,7 +328,7 @@ campusoft.game.Text.prototype.tap = function (fnName) {
 
 
 campusoft.game.Group = function (game, name) {
-	console.info('campusoft.game.Group');
+	console.debug('campusoft.game.Group');
 
 	Phaser.Group.call(this, game, name);
 
@@ -343,7 +341,7 @@ campusoft.game.Group.prototype.constructor = campusoft.game.Group;
 
 
 campusoft.game.Tween = function (target, game, manager) {
-	console.info('campusoft.game.Tween');
+	console.debug('campusoft.game.Tween');
 
 	Phaser.Tween.call(this, target, game, manager);
 };
@@ -384,7 +382,7 @@ campusoft.game.Tween.prototype.from = function (properties, duration, ease, auto
 };
 
 campusoft.game.collide = function (obj1, obj2, collisionHandler) {
-	console.info('campusoft.game.collide');
+	console.debug('campusoft.game.collide');
 	this.obj1 = obj1;
 	this.obj2 = obj2;
 	this.collisionHandler = collisionHandler;
@@ -414,7 +412,9 @@ var random = function () {
 		}
 
 	} else if (arguments.length == 1) {
-
+		
+		var ele = arguments[0];
+		
 		var type = typeof ele;
 
 		if (Array.isArray(ele)) {

@@ -6,7 +6,7 @@ var campusoft = campusoft || {};
 if (!campusoft.game) campusoft.game = {};
 if (!campusoft.game.default) campusoft.game.default = {};
 
-var GAME_WIDTH = 800;
+var GAME_WIDTH = 600;
 var GAME_HEIGHT = 600;
 
 

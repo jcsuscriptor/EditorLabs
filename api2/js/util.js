@@ -38,7 +38,7 @@ var ns = function (namespace) {
  */
 var getFullPath = function (src) {
     //TODO: Mejorar la estructura de carpetas
-    return 'http://localhost:1010/juegos/api2/'+ src;
+    return src;
 }; 
 
 // TODO: Used for i18n string extraction

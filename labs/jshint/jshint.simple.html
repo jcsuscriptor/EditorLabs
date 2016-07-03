@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>JsHint</title>
+	<style type="text/css" media="screen">
+	</style>
+</head>
+
+<body>
+	<strong>Code</strong>
+	<textarea name="sourceCode" id="sourceCode"></textarea>
+	<strong>Resultado</strong>
+	<textarea name="resultCode" id="resultCode"></textarea>
+	<input onclick="validar();" type="button" value="Validar">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.9.2/jshint.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		function validar(){
+ 				console.log('validar');
+				var code = document.getElementById('sourceCode').value; 
+				var options = {
+					undef: true
+				};
+				var predef = {
+					foo: false
+				};
+				
+				JSHINT(code, options, predef);
+
+			 var result = document.getElementById('resultCode')
+
+			 var data = JSHINT.data();
+			 console.log(data);
+			 result.value = JSON.stringify( data);
+
+ 		}
+
+    var  	source = [
+	  'sprint();'
+	];
+	var options = {
+	 undef: true
+	};
+	
+	var predef = {
+	  sprint: false
+	}; 
+	
+	JSHINT(source, options, predef);
+
+	console.log(JSHINT.data());
+
+</script>
+
+</body>
+
+</html>

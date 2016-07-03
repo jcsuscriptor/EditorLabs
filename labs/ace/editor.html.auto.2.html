@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ACE in Action</title>
+    <style type="text/css" media="screen">
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+    
+    <script>
+
+    function is(token, type) {
+        return token.type.lastIndexOf(type + ".xml") > -1;
+    }
+
+    //trigger extension
+    var langTools = ace.require("ace/ext/language_tools");
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/html");
+    // enable autocompletion and snippets
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+    });
+
+    // Custom
+    var FooCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+             console.info(prefix);
+             var token = session.getTokenAt(pos.row, pos.column);
+             if (!token)
+                return [];
+            console.info(token);
+            if (is(token, "tag-name") || is(token, "tag-open") || is(token, "end-tag-open"))
+                console.info(token + " tag-name,tag-open,end-tag-open ");
+            if (is(token, "tag-whitespace") || is(token, "attribute-name"))
+                console.info(token + " tag-whitespace,attribute-name ");
+
+            return [];
+        }
+    }
+    langTools.addCompleter(FooCompleter);
+
+</script>
+</body>
+
+</html>

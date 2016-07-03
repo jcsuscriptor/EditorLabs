@@ -1,0 +1,11 @@
+{
+  "name": "aprender",
+  "authors": [
+    "Juan Carlos Saaveedra <@jc_suscriptor>"
+  ],
+  "description": "Plantaforma de aprendizaje de Programacion para niños",
+  "dependencies": {
+        "bootstrap": "*",
+        "jshint":"*" 
+     }
+}

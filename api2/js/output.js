@@ -22,11 +22,16 @@ campusoft.game.Output = function () {
 		var body = document.querySelector('body')
         if (this.iframe) body.removeChild(iframe);
 		this.iframe = document.createElement('iframe');
+		
+		//TODO: Como estblecer que utilice todo el espacio del contenedor
 		this.iframe.setAttribute('width', '600px');
-		this.iframe.setAttribute('height', '800px');
+		this.iframe.setAttribute('height', '600px');
 		this.iframe.setAttribute('frameBorder', '0');
+		this.iframe.setAttribute('scrolling','no');
 		body.appendChild(iframe);
     }
+
+	var tryCatchTemplate = 'try { @code } catch (error) { console.log("error.tryCatchTemplate"); }'; 
 
 	// Create an iframe and load html into it. Post back with a `load` event
 	// when the iframe has loaded.
@@ -34,19 +39,29 @@ campusoft.game.Output = function () {
 		console.debug('_loadJavascript');
 
 		try {
-			var body =  this.iframe.contentWindow.document.querySelector('body');
+			var body = this.iframe.contentWindow.document.querySelector('body');
 
- 			this.blockJavacript = this.iframe.contentWindow.document.createElement('script');
+			this.blockJavacript = this.iframe.contentWindow.document.createElement('script');
 			this.blockJavacript.setAttribute('type', 'text/javascript');
+			
+			var codeSafe = tryCatchTemplate.replace("@code", this.code);
+
+			//TODO: Revisar como capturar errores en el code que append
 			this.blockJavacript.innerHTML = this.code;
+
+			this.blockJavacript.addEventListener('error', function(){
+				console.log('Existe error body:');
+			}, true);
 
 			//document.getElementsByTagName('head').item(0).appendChild(blockJavacript);
 			body.appendChild(this.blockJavacript);
 
-			return true;  
+			
+
+			return true;
 
 		} catch (error) {
-
+			console.log('Existe errores:');
 			if (error.name)
 				console.error(error.name);
 			if (error.message)
@@ -55,25 +70,25 @@ campusoft.game.Output = function () {
 		return false;
 	}
 
-   // Send a message back to the parent frame
-	var  postParent  = function (type, data) {
+	// Send a message back to the parent frame
+	var postParent = function (type, data) {
 		console.debug('postParent');
 
 		var msg = JSON.stringify({
-			data   : data
-			, type   : type 
+			data: data
+			, type: type
 		});
 
 		// If there is no frameSource (e.g. we're not embedded in another page)
         // Then we don't need to care about sending the messages anywhere!
         if (this.frameSource) {
-            this.frameSource.postMessage(msg,this.frameOrigin);
+            this.frameSource.postMessage(msg, this.frameOrigin);
         }
 	}
 
     //TODO: Ver como manejerar los path relativos... 
-	var template = '<html> <head> <script type="text/javascript" src="../../api2/js/phaser.2.4.4.js"></script> <script type="text/javascript" src="../../api2/js/util.js"></script> <script type="text/javascript" src="../../api2/js/images.js"></script> <script type="text/javascript" src="../../api2/js/sounds.js"></script> <script type="text/javascript" src="../../api2/js/colors.js"></script> <script type="text/javascript" src="../../api2/js/background.js"></script><script type="text/javascript" src="../../api2/js/api2.js"></script> </head> </html>';
-
+	var template = '<html> <head><style> body { margin: 0px; padding: 0px; } iframe{ border: none; margin: 0px; padding: 0px; } </style> <script type="text/javascript" src="../../api2/js/phaser.2.4.4.js"></script> <script type="text/javascript" src="../../api2/js/util.js"></script> <script type="text/javascript" src="../../api2/js/images.js"></script> <script type="text/javascript" src="../../api2/js/sounds.js"></script> <script type="text/javascript" src="../../api2/js/colors.js"></script> <script type="text/javascript" src="../../api2/js/background.js"></script><script type="text/javascript" src="../../api2/js/api2.js"></script> </head> </html>';
+ 
 
 
 	var load = function (code) {
@@ -89,6 +104,7 @@ campusoft.game.Output = function () {
 		iframe.addEventListener('load', function () {
 			console.debug('iframe.load');
 			var _result = _loadJavascript();
+			console.debug('_result _loadJavascript : ' + _result);
 			postParent('load', null);
 		}, false);
 
@@ -112,7 +128,7 @@ campusoft.game.Output = function () {
 	}
 
 	this.handleMessage = function (event) {
-		
+
 		console.debug('handleMessage');
 
 		//TODO: Mejorar 
@@ -130,8 +146,8 @@ campusoft.game.Output = function () {
 
 		var type = msg.type
 			, data = msg.data;
- 
- 		//TODO: Segun el tipo ejecutar la function/action
+
+		//TODO: Segun el tipo ejecutar la function/action
 		//Load
 		load(data);
 
@@ -148,3 +164,14 @@ if (window.addEventListener) {
 } else if (window.attachEvent) { // ie8
 	window.attachEvent('onmessage', output.handleMessage);
 }
+
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+    var string = msg.toLowerCase();
+    var substring = "script error";
+    if (string.indexOf(substring) > -1){
+       console.error('Script Error: See Browser Console for Detail');
+    } else {
+        console.error(msg, url, lineNo, columnNo, error);
+    }
+  return false;
+};

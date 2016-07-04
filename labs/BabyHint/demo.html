@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+   
+  </style>
+</head>
+<body>
+ 
+<script src="../../api2/libs/BabyHint/dist/babyhint.standalone.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.9.2/jshint.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+<script>
+	 var code = "reect(20, 20, 10, 20);";
+	 
+	 var options = {
+	  undef: true
+	 };
+	 var predef = {
+	  foo: false
+	 };
+	 
+	 JSHINT(code, options, predef);
+	 console.log(JSHINT.errors);
+	 
+     var context = {
+		rect(a,b,c,d) {},
+		noStroke() {},
+		random() {},
+		ellipse(a,b,c,d) {},
+		key() {},
+		println(a) {}
+	};
+
+	BabyHint.init({ context });
+
+	var errors = BabyHint.babyErrors(code,JSHINT.errors);
+	console.log(errors);
+	
+	var code2 = "rect(20, 20, 10);";
+	JSHINT(code2, options, predef);
+	console.log(JSHINT.errors);
+	var errors = BabyHint.babyErrors(code2,JSHINT.errors);
+	console.log(errors);
+</script>
+
+</body>
+</html>

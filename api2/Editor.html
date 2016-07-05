@@ -3,13 +3,12 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" 
-        crossorigin="anonymous">   
-   
+    <link rel="stylesheet" href="libs/bootstrap-3.0.0/content/Content/bootstrap.min.css" >
+    
+    <link href="libs/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet"  >
+ 
     <style type="text/css">
         .col-fixed-600 {
             width: 600px;
@@ -50,20 +49,8 @@
     </style>
 
     <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
-
-    <!-- Bootstrap - Helper -->
-    <script type="text/javascript" src="libs/bootbox/bootbox.js"></script>
-
-    <!-- Ace -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
-   
-    <!-- Plataform -->
-    <script type="text/javascript" src="js/edit.js"></script>
-
+    <script src="libs/jQuery-1.11.3/jquery-1.11.3.js"></script>
+ 
 </head>
 
 
@@ -91,7 +78,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="btn-group" role="group" aria-label="Instrucciones">
-                                <button type="button" data-cp-cmd="sprite" class="btn btn-default btn-cmd"  data-toggle="tooltip" data-placement="top" title="Crear un Sprite">sprite</button>
+                                <button type="button" data-cp-cmd="sprite" class="btn btn-default btn-cmd" data-toggle="tooltip" data-placement="top" title="Crear un Sprite">sprite</button>
                                 <button type="button" data-cp-cmd="fill" class="btn btn-default btn-cmd" data-toggle="tooltip" data-placement="top" title="Rellenar el fondo con un color o una imagen">fill</button>
                                 <button type="button" data-cp-cmd="text" class="btn btn-default btn-cmd" data-toggle="tooltip" data-placement="top" title="Crear bloque de texto">text</button>
                                 <button type="button" data-cp-cmd="tween" class="btn btn-default btn-cmd" data-toggle="tooltip" data-placement="top" title="Crear Animaciones">tween</button>
@@ -107,11 +94,25 @@
     </div>
 
     <script>
-             //initialize  
+
+        var editor,editCode;
+
+        function runCode()
+        {
+            var code = editor.getValue();
+            editCode.runCode(code);
+        }
+
+        function cmd(event){
+            editor.insert($(this).data("cp-cmd"));
+        }
+
+        $(function() {
+            //initialize  
              $('[data-toggle="tooltip"]').tooltip(); 
 
             //Ace
-             var editor = ace.edit("editor");
+             editor = ace.edit("editor");
              
              //editor.setTheme("ace/theme/chrome");
              //editor.setTheme("ace/theme/dreamweaver");             
@@ -125,23 +126,26 @@
             //TODO: use jquery select
             //var iframe = $('#ifOutput');
             var iframe = document.getElementById('ifOutput');
-            var editCode = new campusoft.game.Edit(iframe);
+            editCode = new campusoft.game.Edit(iframe);
             editCode.init();
-
-            function runCode()
-            {
-                    var code = editor.getValue();
-                    editCode.runCode(code);
-            }
-
-            function cmd(event){
-                 editor.insert($(this).data("cp-cmd"));
-            }
-
+ 
             $('.btn-cmd').on('click',cmd);
-    
-            
+
+        });
     </script>
+
+    <!-- Bootstrap -->
+    <script src="libs/bootstrap-3.0.0/content/Scripts/bootstrap.min.js" ></script>
+ 
+
+    <!-- Bootstrap - Helper -->
+    <script type="text/javascript" src="libs/bootbox/bootbox.js"></script>
+
+    <!-- Ace -->
+    <script src="libs/ace-editor/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Plataform -->
+    <script type="text/javascript" src="js/edit.js"></script>
 </body>
 
 </html>

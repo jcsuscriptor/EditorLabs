@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+
+  </style>
+  <!-- jquery -->
+  <script src="../../api2/libs/jQuery-1.11.3/jquery-1.11.3.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    if (typeof define === "function" && define.amd) {
+        // AMD. Register as an anonymous module.
+        //define(["jquery"], factory);
+      console.log(' AMD. Register as an anonymous module.');
+      } else if (typeof exports === "object") {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        //module.exports = factory(require("jquery"));
+      console.log(' module.exports');
+      } else {
+        // Browser globals (root is window)
+        //root.bootbox = factory(root.jQuery);
+      console.log('nothing');
+      }
+</script>
+
+</body>
+
+</html>

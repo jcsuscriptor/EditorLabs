@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+
+  </style>
+ 
+</head>
+
+<body>
+
+  <script>
+(function(root, mod) {
+    if (typeof exports == "object" && typeof module == "object") return mod(exports); // CommonJS
+    if (typeof define == "function" && define.amd) return define(["exports"], mod); // AMD
+    mod(root.acorn || (root.acorn = {})); // Plain browser env
+})(this, function(exports) {
+  "use strict";
+
+  exports.version = "0.4.1";
+  exports.parse = function(inpt, opts) {
+    input = String(inpt); inputLen = input.length;
+    setOptions(opts);
+    initTokenState();
+    return parseTopLevel(options.program);
+  };
+
+</script>
+
+</body>
+
+</html>

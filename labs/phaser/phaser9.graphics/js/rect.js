@@ -11,6 +11,7 @@ function create(){
 	//lineStyle
 	
 	
+	
 	//game.stage.backgroundColor  = 0xffffff;
 	var bar = game.add.graphics();
     bar.beginFill(0x0000ff);
@@ -26,7 +27,8 @@ function create(){
     bar.drawCircle(300, 200, 50);
 	
 	bar.beginFill(0x00ff00);
-    bar.drawEllipse(200, 200, 50,100);   
+    
+	bar.drawEllipse(200, 200, 50,100);   
 	
 	//lineStyle(lineWidth, color, alpha) → {PIXI.Graphics}
 	//moveTo(x, y) → {PIXI.Graphics}

@@ -82,7 +82,6 @@ campusoft.game.Output = function () {
 		// If there is no frameSource (e.g. we're not embedded in another page)
         // Then we don't need to care about sending the messages anywhere!
         if (this.frameSource) {
-			console.debug('postParent'+msg);
             this.frameSource.postMessage(msg, this.frameOrigin);
         }
 	}
@@ -92,8 +91,8 @@ campusoft.game.Output = function () {
 	//exite dos iframe 1. output tiene el principal, el codigo se ejecuta en un interno.
 	//se debe realizar un mecanismo para comunicar el iframe padre con el hijo... y
 	//el iframe comunique a quien lo llamo... 
-	var template = '<html> <head><style> body { margin: 0px; padding: 0px; } iframe{ border: none; margin: 0px; padding: 0px; } </style> <script type="text/javascript" src="../../api2/js/phaser.2.4.4.js"></script> <script type="text/javascript" src="../../api2/js/util.js"></script> <script type="text/javascript" src="../../api2/js/images.js"></script> <script type="text/javascript" src="../../api2/js/sounds.js"></script> <script type="text/javascript" src="../../api2/js/colors.js"></script> <script type="text/javascript" src="../../api2/js/background.js"></script><script type="text/javascript" src="../../api2/js/api2.js"></script><script>window.onerror=function(errorMsg, url, lineNumber) { console.error("control_error: "+ errorMsg + ", lineNumber "+ lineNumber); };</script></head> </html>';
-  
+	var template = '<html> <head><style> body { margin: 0px; padding: 0px; } iframe{ border: none; margin: 0px; padding: 0px; } </style> <script type="text/javascript" src="../../api2/libs/phaser-2.4.4/phaser.2.4.4.js"></script> <script type="text/javascript" src="../../api2/js/util.js"></script> <script type="text/javascript" src="../../api2/js/images.js"></script> <script type="text/javascript" src="../../api2/js/sounds.js"></script> <script type="text/javascript" src="../../api2/js/colors.js"></script> <script type="text/javascript" src="../../api2/js/background.js"></script><script type="text/javascript" src="../../api2/js/api2.js"></script><script>window.onerror=function(errorMsg, url, lineNumber) { console.error("control_error: "+ errorMsg + ", lineNumber "+ lineNumber); };</script></head> </html>';
+
 
   	var lint = function () {
 		console.debug('lint');
@@ -147,7 +146,7 @@ campusoft.game.Output = function () {
             var type = "error"; //"warning";"info";
 			//TODO: Determinar el tipo de error. (Error, Warning, Info)
 			//Se puede utilizar  error.code "W030", I001, E051
-			//if (error.code == )
+			//if (error.code === )
 			//        type = "error";
             //   } else {
             //        type = "info";
@@ -242,8 +241,8 @@ campusoft.game.Output = function () {
 
 	this.handleMessage = function (event) {
 
-		console.debug('handleMessage: '+ event);
-
+		console.debug('handleMessage');
+		console.debug(event);
 		//TODO: Mejorar 
 		frameSource = event.source;
 		frameOrigin = event.origin;

@@ -48,6 +48,7 @@ campusoft.game.Edit = function (iframeOutput) {
 	this.handleMessage = function (event) {
 
 		console.debug('handleMessage');
+		console.debug(event);
 
 		//TODO: Mejorar 
 		frameSource = event.source;
@@ -65,9 +66,8 @@ campusoft.game.Edit = function (iframeOutput) {
         //TODO: Action respuesta
 		//1. Quitar mask, load output ok
 		//2. Show error,warning output.. 
-		console.debug(msg);
-		var type = msg.type;
-		if (type == 'load') {
+	 	var type = msg.type;
+		if (type === 'load') {
 			var data = msg.data;
 			if (data != null && data.errors != undefined && (Array.isArray(data.errors)) && data.errors.length>0) {
 				//TODO: Presentar errores  >> (Siguiente, Anterior)
@@ -76,6 +76,7 @@ campusoft.game.Edit = function (iframeOutput) {
 				});
 			}
 		}
+		//TODO thrwon error
 	}
 
     this.runCode = function (code) {

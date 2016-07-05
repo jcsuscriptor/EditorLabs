@@ -3,16 +3,18 @@
 */
 
 var campusoft = campusoft || {};
-if (!campusoft.game) campusoft.game = {};
-if (!campusoft.game.default) campusoft.game.default = {};
+if (!campusoft.game) { campusoft.game = {}; }
+if (!campusoft.game.default) { campusoft.game.default = {}; }
 
 var GAME_WIDTH = 600;
 var GAME_HEIGHT = 600;
 
 
 //Default Values
-campusoft.game.default.color = "white";
+campusoft.game.default.color = campusoft.game.colorNameToHex("white");
 campusoft.game.default.backgroundColor = campusoft.game.colorNameToHex("black");
+ 
+
 
 //Direct Variables
 var colors = campusoft.game.colors;
@@ -27,12 +29,15 @@ var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, 'game');
 //List collisions
 campusoft.game.collideList = [];
 
+campusoft.game.graphics = null;
+
+
 campusoft.game.main = function (game) {
 	console.info("campusoft.game.main");
 };
 
 campusoft.game.main.prototype = {
-	
+
 	preload: function () {
 		console.info("campusoft.game.main.preload");
 
@@ -44,7 +49,7 @@ campusoft.game.main.prototype = {
 
 	create: function () {
 		console.info("campusoft.game.main.create");
-		
+
 		//http://phaser.io/examples/v2/input/input-priority
 		//game.input.priorityID = 0;
 
@@ -52,6 +57,9 @@ campusoft.game.main.prototype = {
 		//enabled physics 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
+		//graphics
+		campusoft.game.graphics =game.add.graphics();
+		campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor);
 
 		//TODO: para que srive preventDefault
 		//game.input.touch.preventDefault = false;
@@ -60,16 +68,15 @@ campusoft.game.main.prototype = {
 	},
 
 	update: function () {
+		var _collide = null;
 		//collide
 		for (index = 0; index < campusoft.game.collideList.length; ++index) {
-
-			var _collide = campusoft.game.collideList[index];
-
+			_collide = campusoft.game.collideList[index];
 			game.physics.arcade.overlap(_collide.obj1, _collide.obj2, _collide.collisionHandler, null, this);
 		}
 
-		if (window.loop && (typeof window.loop == 'function')) {
-			
+		if (window.loop && (typeof window.loop === 'function')) {
+
 			window.loop();
 		}
 	}
@@ -259,10 +266,10 @@ campusoft.game.Text = function (game, text, x, y, color, style) {
 	console.debug('campusoft.game.Text');
 
 	var _color; // private member
-	if (color === undefined || color === null || !campusoft.game.colors[color]) {
+	if (color === undefined || color === null || !campusoft.game.colors[color.toLowerCase()]) {
 		_color = campusoft.game.default.color;
 	} else {
-		_color = color.toLowerCase();
+		_color = campusoft.game.colorNameToHex(color.toLowerCase());
 	}
 
 	Object.defineProperty(this, "color", {
@@ -270,20 +277,20 @@ campusoft.game.Text = function (game, text, x, y, color, style) {
 			return _color;
 		},
 		set: function (value) {
-			if (value === undefined || value === null || !campusoft.game.colors[value]) {
+			if (value === undefined || value === null || !campusoft.game.colors[value.toLowerCase()]) {
 				_color = campusoft.game.default.color;
 			} else {
-				_color = value.toLowerCase();
+				_color = campusoft.game.colorNameToHex(value.toLowerCase());
 			}
-			this.fill = campusoft.game.colorNameToHex(_color);
+			this.fill = _color;
 		}
 	});
 
 	//TODO: Revisar como se pasa informacion de style
-	var _styleDefault = { 'fill': campusoft.game.colorNameToHex(this.color) };
+	var _styleDefault = { 'fill': this.color };
 	if (style !== undefined) {
 		_styleDefault = style;
-		_styleDefault.fill = campusoft.game.colorNameToHex(this.color);
+		_styleDefault.fill = this.color;
 		/* 
 		style = style || {};
 		style.font = style.font || 'bold 20pt Arial';
@@ -412,13 +419,13 @@ var random = function () {
 		}
 
 	} else if (arguments.length == 1) {
-		
+
 		var ele = arguments[0];
-		
+
 		var type = typeof ele;
 
 		if (Array.isArray(ele)) {
-			
+
 			return ele[Math.floor(Math.random() * ele.length)];
 
 		} else if (type === 'object') {
@@ -441,7 +448,7 @@ var random = function () {
 	throw new Error(i18n._('random: parametros erroneos'));
 };
 
- 
+
 /**
  * 
  * It lets fill the screen with a color or an image.
@@ -490,7 +497,7 @@ var fill = function (name) {
 	return false;
 };
 
- 
+
 /**
  * Create Sprite
  * 
@@ -532,13 +539,73 @@ var text = function (text, x, y, color, style) {
     return _text;
 };
 
- 
+var color = function(color){
+	//TODO: Color : Nombre
+	//color(RED, GREEN, BLUE)
+	var _color = color.toLowerCase();
+	if (!campusoft.game.colors[_color]) {
+		var _msg = i18n._("El parametro [color] debe ser un nombre de color");
+		throw _msg;
+	}
+
+	var _hex = campusoft.game.colorNameToHex(_color);
+	campusoft.game.default.backgroundColor = _hex;
+	
+	//Set Color
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor);
+	return true;
+}
+
+
+var stroke = function(color, size){
+	
+	var _color = color.toLowerCase();
+	if (!campusoft.game.colors[_color]) {
+		var _msg = i18n._("El parametro [color] debe ser un nombre de color");
+		throw _msg;
+	}
+	var _hex = campusoft.game.colorNameToHex(_color);
+	campusoft.game.default.color =  _hex;
+
+	//TODO: Definir un solo formato.
+	//Convert #0000ff 0x0000ff
+	campusoft.game.graphics.lineStyle(size,campusoft.game.default.color.replace('#','0x'));
+
+}
+
+var rectangle = function(x,y,width,height){
+	
+	//TODO: Definir un solo formato.
+	//Convert #0000ff 0x0000ff
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
+	campusoft.game.graphics.drawRect(x, y, width,height);
+}
+
+
+var circle = function(x,y, radius){
+	
+	//TODO: Definir un solo formato.
+	//Convert #0000ff 0x0000ff
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
+	campusoft.game.graphics.drawCircle(x, y, radius);
+}
+
+var ellipse = function(x,y, radius_x,radius_y){
+	
+	//TODO: Definir un solo formato.
+	//Convert #0000ff 0x0000ff
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
+	campusoft.game.graphics.drawEllipse(x, y, radius_x,radius_y);
+	 
+}
+
+
 var group = function (name) {
 	var _group = new campusoft.game.Group(game, name);
     return _group;
 };
 
- 
+
 var tween = function (target) {
 	/*
 	* TODO: Revisar si es necesario verificar el tipo de dato.
@@ -550,7 +617,7 @@ var tween = function (target) {
 	return _tween;
 };
 
- 
+
 var collide = function (obj1, obj2, collisionHandler) {
 
 	if (!collisionHandler)
@@ -566,7 +633,7 @@ var collide = function (obj1, obj2, collisionHandler) {
 function _onTap(pointer) {
 	x = game.input.x;
 	y = game.input.y;
-	if (window.tap && (typeof window.tap == 'function')) {
+	if (window.tap && (typeof window.tap === 'function')) {
 		window.tap(pointer);
 	}
 };

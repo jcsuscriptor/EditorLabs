@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ACE in Action</title>
+    <style type="text/css" media="screen">
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="editor">function foo(items) { var x = "All this is syntax highlighted"; return x; }
+    </div>
+
+    <script src="../../api2/libs/ace-editor/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+    console.log('init');
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+
+    editor.getSelection().on('changeCursor', function(e) {
+          console.log('selection.changeCursor');
+           //console.log(e); 
+           var selection = editor.getSelection();
+            var pos = selection.getCursor();
+            var params = {
+                col: pos.column,
+                row: pos.row,
+                line: editor.getSession().getDocument().getLine(pos.row),
+                selections: selection.getAllRanges()
+                //,source: source
+            };
+            params.pre = params.line.slice(0, params.col);
+            params.post = params.line.slice(params.col);
+            console.log(params); 
+
+    });
+
+    editor.getSession().getDocument().on('change', function(e) {
+          console.log('getDocument.change');
+            console.log(e);
+            var selection = editor.getSelection();
+            var pos = selection.getCursor();
+            var params = {
+                col: pos.column,
+                row: pos.row,
+                line: editor.getSession().getDocument().getLine(pos.row),
+                selections: selection.getAllRanges()
+                //,source: source
+            };
+            params.pre = params.line.slice(0, params.col);
+            params.post = params.line.slice(params.col);
+            console.log(params);      
+    });
+
+ 
+
+    //changeSelection
+    editor.getSession().selection.on('changeSelection', function(e) {
+            console.log('selection.changeSelection');
+
+            var range = editor.getSelectionRange()
+            console.log(range);
+      
+
+            var token = editor.session.getTokenAt(range.start.row, range.start.column);
+            console.log('token:');
+            console.log(token);
+            if (!token)
+                retunr;
+
+            getTokenHandlerType(token);
+ 
+    });
+
+     function getTokenHandlerType(token) {
+            if (token.type === 'constant.numeric') {
+                console.log('constant.numeric');
+            } else if (isColorToken(token)) {
+               console.log('isColorToken(token)');
+            }
+    }
+
+     function isColorToken(token) {
+                var value = token.value,
+                    isHexa, isRgbOrHsl;
+                console.log(value);
+ 
+            }
+ 
+     
+  
+
+</script>
+</body>
+
+</html>

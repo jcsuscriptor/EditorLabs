@@ -26,6 +26,7 @@ function create(){
 }
 
 
+
 function genera(punto) {
     emitter.x = punto.x;
     emitter.y = punto.y;

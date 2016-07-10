@@ -13,8 +13,9 @@ var GAME_HEIGHT = 600;
 //Default Values
 campusoft.game.default.color = campusoft.game.colorNameToHex("white");
 campusoft.game.default.backgroundColor = campusoft.game.colorNameToHex("black");
- 
-
+campusoft.game.default.backgroundAlpha = 1; 
+campusoft.game.default.strokeSize = 1; 
+campusoft.game.default.strokeAlpha = 1; 
 
 //Direct Variables
 var colors = campusoft.game.colors;
@@ -387,6 +388,52 @@ campusoft.game.Tween.prototype.from = function (properties, duration, ease, auto
 
 	return this;
 };
+ 
+campusoft.game.Particles = function (game,keys, x, y, maxParticles) {
+	console.debug('campusoft.game.Particles');
+	
+	this.keys = keys;
+
+	//TODO: Realizar carga de varios 
+ 	if (Array.isArray(this.keys)){
+	}  
+
+	if (campusoft.game.asset.images[this.keys]) {
+		this.image = campusoft.game.asset.images[this.keys];
+	} else {
+		this.image = campusoft.game.asset.images['fillnotfound'];
+	}
+
+    var _checkKey = game.cache.checkKey(Phaser.Cache.IMAGE,this.keys);
+
+	//TODO: Si la imagen no esta load, como bloquear hasta que se carge la imagen luego crear el objeto Phaser.Sprite
+	if (!_checkKey) {
+		var _loadComplete = function (name) {
+			
+			//this.loadTexture(this.keys);
+			
+			//game.physics.enable(this, Phaser.Physics.ARCADE);
+			console.debug('campusoft.game.Particles._loadComplete');
+		};
+
+		Phaser.Particles.Arcade.Emitter.call(this, game, x, y, maxParticles);
+	 
+
+		//this.game.load.onLoadStart.addOnce(_loadStart, this);
+		game.load.onLoadComplete.addOnce(_loadComplete, this, 0, this.keys);
+		game.load.image(this.keys, getFullPath(this.image.src));
+		game.load.start();
+
+	} else {
+		Phaser.Particles.Arcade.Emitter.call(this, game, x, y, maxParticles);
+	}
+
+	
+};
+
+campusoft.game.Particles.prototype = Object.create(Phaser.Particles.Arcade.Emitter.prototype);
+campusoft.game.Particles.prototype.constructor = campusoft.game.Particles;
+
 
 campusoft.game.collide = function (obj1, obj2, collisionHandler) {
 	console.debug('campusoft.game.collide');
@@ -539,7 +586,7 @@ var text = function (text, x, y, color, style) {
     return _text;
 };
 
-var color = function(color){
+var color = function(color,alpha){
 	//TODO: Color : Nombre
 	//color(RED, GREEN, BLUE)
 	var _color = color.toLowerCase();
@@ -548,16 +595,24 @@ var color = function(color){
 		throw _msg;
 	}
 
+	//alpha 0 - 1
+	var type = typeof alpha;
+	if ((type === 'number') && (alpha <= 1) && (alpha >= 0)) {
+		campusoft.game.default.backgroundAlpha = (alpha === undefined) ? 1 : alpha;
+	}
+	
 	var _hex = campusoft.game.colorNameToHex(_color);
 	campusoft.game.default.backgroundColor = _hex;
 	
 	//Set Color
-	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor);
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'),
+	campusoft.game.default.backgroundAlpha);
+
 	return true;
 }
 
 
-var stroke = function(color, size){
+var stroke = function(color, size,alpha){
 	
 	var _color = color.toLowerCase();
 	if (!campusoft.game.colors[_color]) {
@@ -567,9 +622,17 @@ var stroke = function(color, size){
 	var _hex = campusoft.game.colorNameToHex(_color);
 	campusoft.game.default.color =  _hex;
 
+	campusoft.game.default.strokeSize = size;
+
+	var type = typeof alpha;
+	if ((type === 'number') && (alpha <= 1) && (alpha >= 0)) {
+		campusoft.game.default.strokeAlpha = (alpha === undefined) ? 1 : alpha;
+	}
+ 
+
 	//TODO: Definir un solo formato.
 	//Convert #0000ff 0x0000ff
-	campusoft.game.graphics.lineStyle(size,campusoft.game.default.color.replace('#','0x'));
+	//campusoft.game.graphics.lineStyle(size,campusoft.game.default.color.replace('#','0x'));
 
 }
 
@@ -577,25 +640,41 @@ var rectangle = function(x,y,width,height){
 	
 	//TODO: Definir un solo formato.
 	//Convert #0000ff 0x0000ff
-	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
-	campusoft.game.graphics.drawRect(x, y, width,height);
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'),
+	campusoft.game.default.backgroundAlpha);
+	
+	return campusoft.game.graphics.drawRect(x, y, width,height);
 }
 
 
 var circle = function(x,y, radius){
+	//TODO: 
 	
+	var _graphics = game.add.graphics(x,y);
+
 	//TODO: Definir un solo formato.
 	//Convert #0000ff 0x0000ff
-	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
-	campusoft.game.graphics.drawCircle(x, y, radius);
+	_graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'),
+	campusoft.game.default.backgroundAlpha);
+	
+	_graphics.lineStyle(campusoft.game.default.strokeSize,
+	campusoft.game.default.color.replace('#','0x'),
+	campusoft.game.default.strokeAlpha);
+
+	var _circle = _graphics.drawCircle(0, 0, radius);
+	//_circle.x = x;
+	//_circle.y = y;
+	return _graphics;
 }
 
 var ellipse = function(x,y, radius_x,radius_y){
 	
 	//TODO: Definir un solo formato.
 	//Convert #0000ff 0x0000ff
-	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'));
-	campusoft.game.graphics.drawEllipse(x, y, radius_x,radius_y);
+	campusoft.game.graphics.beginFill(campusoft.game.default.backgroundColor.replace('#','0x'),
+	campusoft.game.default.backgroundAlpha);
+	
+	return campusoft.game.graphics.drawEllipse(x, y, radius_x,radius_y);
 	 
 }
 
@@ -615,6 +694,20 @@ var tween = function (target) {
 	*/
 	var _tween = new campusoft.game.Tween(target, game, game.tweens);
 	return _tween;
+};
+
+ 
+
+//* @param {array|string} keys - A string or an array of strings that the particle sprites will use as their texture. If an array one is picked at random.
+var particles = function (keys, x,y,maxParticles) {
+	 
+	//TODO: Validate Paramets
+	var _particles =  game.particles.add(new campusoft.game.Particles( game,x,y, maxParticles));
+
+	//  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
+  	_particles.makeParticles(keys);
+
+	return _particles;
 };
 
 

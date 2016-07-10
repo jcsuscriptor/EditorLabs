@@ -41,7 +41,7 @@ var getFullPath = function (src) {
     //            + window.location.pathname.split("/").slice(0, -1).join("/"),
 
     //TODO: Mejorar la estructura de carpetas
-    return src;
+    return 'http://localhost:8888/api2/'+src;
 }; 
 
 // TODO: Used for i18n string extraction

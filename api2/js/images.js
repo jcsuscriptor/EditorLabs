@@ -37,5 +37,7 @@ campusoft.game.asset.images = {
   'starship': {'width': 193, 'height': 195,'src':'assets/images/starship.png'},
   'starshipdark': {'width': 193, 'height': 195,'src':'assets/images/starshipdark.png'},
   'projectile1': {'width': 104, 'height': 160,'src':'assets/images/projectile1.png'},
-  'projectile2': {'width': 104, 'height': 160,'src':'assets/images/projectile2.png'}
+  'projectile2': {'width': 104, 'height': 160,'src':'assets/images/projectile2.png'},
+  'cube': {'width': 104, 'height': 160,'src':'assets/images/cube.png'}
+  
 }; 

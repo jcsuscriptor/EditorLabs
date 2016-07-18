@@ -35,6 +35,10 @@ campusoft.game.graphics = null;
 
 campusoft.game.main = function (game) {
 	console.info("campusoft.game.main");
+	
+	this.frameSource;
+	this.frameOrigin;
+
 };
 
 campusoft.game.main.prototype = {
@@ -42,14 +46,32 @@ campusoft.game.main.prototype = {
 	preload: function () {
 		console.info("campusoft.game.main.preload");
 
+		game.load.onLoadComplete.add(___loadCompletePreload, this);
+
 		//TODO: Aplicar esta propiedad para cuando se utiliza desde un  edit y presiona ejecutar el codigo escrito. Es mejor establecer por propiedades desdes segun sea quien llame. Ejemplo si es modo edit, true, pero si la aplicacion se esta ejecutando normalmente false
 		//keep running on losing focus
 		game.stage.disableVisibilityChange = true;
 
+		if (window.__preload && (typeof window.__preload === 'function')) {
+			window.__preload(game);
+		}
+
+		this.postParent('campusoft.game.main.preload', null);
+		
 	},
 
 	create: function () {
 		console.info("campusoft.game.main.create");
+
+ 		game.load.onLoadComplete.add(__loadComplete, this);
+		
+		var eventPreload = new CustomEvent("preload", {
+			 
+		});
+ 		window.dispatchEvent(eventPreload);
+
+		this.postParent('campusoft.game.main.create', null);
+
 
 		//http://phaser.io/examples/v2/input/input-priority
 		//game.input.priorityID = 0;
@@ -80,11 +102,51 @@ campusoft.game.main.prototype = {
 
 			window.loop();
 		}
+	},
+
+	onCreateCallback:function(){
+		console.debug('onCreateCallback.interno');
+	},
+
+	handleMessage :function (event) {
+		console.debug('campusoft.game.main.handleMessage');
+		this.frameSource = event.source;
+		this.frameOrigin = event.origin;
+	},
+
+	postParent : function (type, data) {
+		console.debug('postParent');
+
+		var msg = JSON.stringify({
+			data: data
+			, type: type
+		});
+
+		// If there is no frameSource (e.g. we're not embedded in another page)
+        // Then we don't need to care about sending the messages anywhere!
+        if (this.frameSource) {
+            this.frameSource.postMessage(msg, this.frameOrigin);
+        }
 	}
 };
 
+
+
 game.state.add("main", campusoft.game.main);
 game.state.start("main");
+
+game.state.onCreateCallback  = function(){
+	console.debug('onCreateCallback.externo');
+};
+
+
+function __loadComplete() {
+	console.debug('__loadComplete');
+}
+
+function ___loadCompletePreload(){
+	console.debug('___loadCompletePreload');
+}
 
 /**
  * Create Sprite
@@ -406,6 +468,8 @@ campusoft.game.Particles = function (game,keys, x, y, maxParticles) {
 
     var _checkKey = game.cache.checkKey(Phaser.Cache.IMAGE,this.keys);
 
+	Phaser.Particles.Arcade.Emitter.call(this, game, x, y, maxParticles);
+/*
 	//TODO: Si la imagen no esta load, como bloquear hasta que se carge la imagen luego crear el objeto Phaser.Sprite
 	if (!_checkKey) {
 		var _loadComplete = function (name) {
@@ -427,7 +491,7 @@ campusoft.game.Particles = function (game,keys, x, y, maxParticles) {
 	} else {
 		Phaser.Particles.Arcade.Emitter.call(this, game, x, y, maxParticles);
 	}
-
+*/
 	
 };
 
@@ -702,7 +766,7 @@ var tween = function (target) {
 var particles = function (keys, x,y,maxParticles) {
 	 
 	//TODO: Validate Paramets
-	var _particles =  game.particles.add(new campusoft.game.Particles( game,x,y, maxParticles));
+	var _particles =  game.particles.add(new campusoft.game.Particles( game,keys,x,y, maxParticles));
 
 	//  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
   	_particles.makeParticles(keys);
@@ -730,3 +794,15 @@ function _onTap(pointer) {
 		window.tap(pointer);
 	}
 };
+
+
+
+
+// Handle messages coming in from the parent frame
+if (window.addEventListener) {
+	window.addEventListener('message', campusoft.game.main.handleMessage, false);
+	 
+} else if (window.attachEvent) { // ie8
+	window.attachEvent('onmessage', campusoft.game.main.handleMessage);
+	 
+}

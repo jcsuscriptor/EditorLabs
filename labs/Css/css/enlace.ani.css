@@ -1,0 +1,91 @@
+ .nav {
+	border-right: 1px solid rgba(41,41,41,.08);
+	float: left;
+	height: 45px;
+    line-height: 45px;
+ }
+ 
+ .enlace_ani {
+	display: block;
+	position: relative;
+	width: auto;
+	float: left;
+    height: 45px;
+    color: rgba(41,41,41,.8);
+    border: 1px solid rgba(41,41,41,.08);
+	border-right: none;
+	padding: 0 20px;
+	box-sizing: border-box;
+
+	/* Estilos */
+ 	line-height: 48px;
+ 	font-size: 10px;
+    font-size: .625em;
+    font-size: .625rem;
+    text-transform: uppercase;
+    text-align: center;
+	letter-spacing: .15em;
+ 	text-decoration: none;
+ }
+
+a.enlace_ani  span  {
+	-webkit-transition: width .45s ease-in-out, height .45s ease-in-out;
+    -moz-transition: width .45s ease-in-out, height .45s ease-in-out;
+    transition: width .45s ease-in-out, height .45s ease-in-out;
+
+	 
+}
+
+
+a.enlace_ani:hover span.hor, 
+a.enlace_ani:focus span.hor {
+    transition: width .45s ease-in-out;
+	width: 100%;
+}
+
+a.enlace_ani:hover span.vert, 
+a.enlace_ani:focus span.vert {
+    transition:height .45s ease-in-out;
+	height: 100%;
+}
+
+ 
+.enlace_ani span {
+	z-index: 10; 
+    position: absolute;
+}
+
+a.enlace_ani span {
+    background: rgba(62,62,62,.8);
+}
+
+.enlace_ani span.hor {
+    width: 0px;
+    height: 1px;
+}
+
+.enlace_ani span.vert {
+    width: 1px;
+    height: 0px;
+}
+
+
+.enlace_ani span.top {
+    top: -1px;
+    left: 0px;
+}
+
+.enlace_ani span.bottom {
+    bottom: -1px;
+    right: 0px;
+}
+
+.enlace_ani span.right {
+    right: -1px;
+	top: 0px;
+}
+
+.enlace_ani span.left {
+    left: -1px;
+	bottom: 0px;
+}

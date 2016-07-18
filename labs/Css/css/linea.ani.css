@@ -1,0 +1,16 @@
+ .linea{
+
+	  background: #2187e7;
+    width: 200px;
+    height: 1px;
+ 		transform: rotate(10deg);
+		transform-origin: 0 0;
+}
+
+ .linea2{
+
+	  background: #2187e7;
+    width: 0px;
+    height: 1px;
+ 		transform: rotate(10deg);
+}

@@ -1,0 +1,35 @@
+a.transition  .transition-opacity{
+	opacity: 1;
+	-webkit-transition: opacity 3s; /* Chrome y Safari */
+	-o-transition:opacity 3s;   /* Opera */
+	-moz-transition: opacity 3s;  /* Mozilla Firefox */
+	-ms-transition: opacity 3s;   /* Internet Explorer */
+	transition: opacity 3s;
+}
+
+
+a.transition:hover .transition-opacity{
+	opacity: 0.1;
+	-webkit-transition: opacity 3s; /* Chrome y Safari */
+	-o-transition:opacity 3s;   /* Opera */
+	-moz-transition: opacity 3s;  /* Mozilla Firefox */
+	-ms-transition: opacity 3s;   /* Internet Explorer */
+	transition: opacity 3s;
+}
+
+ a.transition .transition-left{
+	position: relative;
+	left:0px;
+	-webkit-transition: left 3s;
+	-moz-transition: left 3s;
+	transition: left 3s;
+}
+
+a.transition:hover .transition-left{
+ 
+	position: relative;
+	left:100px;
+	-webkit-transition: left 3s;
+	-moz-transition: left 3s;
+	transition: left 3s;
+}
